@@ -12,7 +12,7 @@ const PROFILE = {
   name: "Wahab Mustapha Aremu",
   title: "Senior DevOps Engineer | Cloud & DevSecOps",
   tagline: "I design, secure, and automate cloud-native platforms at scale.",
-  email: "wahab.devops@gmail.com",
+  email: "wahabfactorial@gmail.com",
   linkedin: "https://www.linkedin.com/in/mustapha-wahab-7a1585151",
   github: "https://github.com/wabsence",
   credly: "https://www.credly.com/users/wahab-mustapha",
@@ -153,6 +153,12 @@ const HeroSection = () => (
             <a href={PROFILE.credly} target="_blank" rel="noreferrer">
               <BadgeCheck className="w-5 h-5 mr-2" />
               Credly
+            </a>
+          </Button>
+           <Button variant="outline" size="lg" asChild>
+            <a href={PROFILE.linkedin} target="_blank" rel="noreferrer">
+              <BadgeCheck className="w-5 h-5 mr-2" />
+              Linkedin
             </a>
           </Button>
         </motion.div>
@@ -400,7 +406,7 @@ const Footer = () => (
   <footer className="py-8 border-t bg-secondary/5">
     <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
       <p>© {new Date().getFullYear()} {PROFILE.name}. All rights reserved.</p>
-      <p className="mt-1">Built with Next.js, Tailwind CSS, and deployed on AWS</p>
+      <p className="mt-1">Built with Next.js, Tailwind CSS, and deployed on Netlify</p>
     </div>
   </footer>
 );
