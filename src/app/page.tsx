@@ -189,17 +189,20 @@ const AboutSection = () => (
             transition={{ duration: 0.6 }}
             className="flex justify-center"
           >
-            <div className="w-64 h-64 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary overflow-hidden shadow-xl">
+         <div className="w-64 h-64 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary overflow-hidden shadow-xl">
               <img 
                 src="/images/profile.jpg" 
                 alt="Wahab Mustapha Aremu"
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling.style.display = 'flex';
+                  const sibling = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (sibling) {
+                    sibling.style.display = 'flex';
+                  }
                 }}
               />
-              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary flex items-center justify-center text-muted-foreground">
+              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary flex items-center justify-center text-muted-foreground" style={{display: 'none'}}>
                 Add Profile Image
               </div>
             </div>
@@ -213,7 +216,7 @@ const AboutSection = () => (
             className="md:col-span-2 space-y-6"
           >
             <p className="text-lg leading-relaxed text-muted-foreground">
-              I'm <strong className="text-foreground">{PROFILE.name}</strong>, a DevOps engineer with 6+ years of experience delivering
+              I&apos;m <strong className="text-foreground">{PROFILE.name}</strong>, a DevOps engineer with 6+ years of experience delivering
               secure, scalable, and observable platforms on AWS. I build with modern cloud-native patterns and enjoy turning complex requirements into
               reliable, automated delivery systems.
             </p>
@@ -380,7 +383,7 @@ const ContactSection = () => (
         </div>
         
         <p className="text-lg text-muted-foreground mb-8">
-          Want to collaborate or discuss an opportunity? Let's connect and build something amazing together.
+          Want to collaborate or discuss an opportunity? Let&apos;s connect and build something amazing together.
         </p>
         
         <div className="grid sm:grid-cols-2 gap-4 max-w-md mx-auto">
