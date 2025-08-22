@@ -1,11 +1,18 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
-import { Github, Mail, ExternalLink, Cloud, ShieldHalf, Boxes, Cpu, BadgeCheck, Download } from "lucide-react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Github, Mail, ExternalLink, Cloud, ShieldHalf, Boxes, Cpu, BadgeCheck, Download, Linkedin, Menu, X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { fadeInUp, staggerContainer } from "@/lib/utils";
+
+// WhatsApp Icon Component (SVG)
+const WhatsAppIcon = ({ className = "w-6 h-6" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.63"/>
+  </svg>
+);
 
 // Profile Data
 const PROFILE = {
@@ -16,6 +23,8 @@ const PROFILE = {
   linkedin: "https://www.linkedin.com/in/mustapha-wahab-7a1585151",
   github: "https://github.com/wabsence",
   credly: "https://www.credly.com/users/wahab-mustapha",
+  whatsapp: "https://wa.me/2348123456789", // Replace with your actual WhatsApp number
+  phone: "+234 812 345 6789" // Replace with your actual phone number
 };
 
 const CERTIFICATIONS = [
@@ -80,37 +89,196 @@ const SKILLS = [
   { name: "CI/CD with GitHub Actions", icon: Github },
 ];
 
-// Components
-const Navigation = () => (
-  <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-sm border-b">
-    <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-      <motion.a 
-        href="#home" 
-        className="text-xl font-bold"
-        {...fadeInUp}
-      >
-        {PROFILE.name.split(' ')[0]}
-      </motion.a>
-      <div className="hidden md:flex items-center space-x-6">
-        {['About', 'Certifications', 'Projects', 'Contact'].map((item) => (
-          <a
-            key={item}
-            href={`#${item.toLowerCase()}`}
-            className="text-sm hover:text-primary transition-colors"
-          >
-            {item}
-          </a>
-        ))}
-        <Button variant="outline" size="sm" asChild>
-          <a href="/assets/resume.pdf" download className="inline-flex items-center gap-2">
-            <Download className="w-4 h-4" />
-            Resume
-          </a>
-        </Button>
-      </div>
-    </div>
-  </nav>
+// Floating Social Media Icons Component
+const FloatingSocialIcons = () => (
+  <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-40 flex flex-col gap-4">
+    <motion.a
+      href={PROFILE.linkedin}
+      target="_blank"
+      rel="noreferrer"
+      className="w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 1.5, duration: 0.5 }}
+      title="Connect on LinkedIn"
+    >
+      <Linkedin className="w-6 h-6" />
+    </motion.a>
+    
+    <motion.a
+      href={PROFILE.whatsapp}
+      target="_blank"
+      rel="noreferrer"
+      className="w-12 h-12 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 1.7, duration: 0.5 }}
+      title="Chat on WhatsApp"
+    >
+      <WhatsAppIcon className="w-6 h-6" />
+    </motion.a>
+  </div>
 );
+
+// Components
+const Navigation = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navItems = ['About', 'Certifications', 'Projects', 'Contact'];
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const closeMenu = () => setIsMenuOpen(false);
+
+  return (
+    <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-sm border-b">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        <motion.a 
+          href="#home" 
+          className="text-xl font-bold"
+          {...fadeInUp}
+        >
+          {PROFILE.name.split(' ').slice(0, 2).join(' ')}
+        </motion.a>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-6">
+          {navItems.map((item) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              className="text-sm hover:text-primary transition-colors"
+            >
+              {item}
+            </a>
+          ))}
+          <div className="flex items-center gap-2">
+            <a
+              href={PROFILE.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+              title="LinkedIn"
+            >
+              <Linkedin className="w-4 h-4" />
+            </a>
+            <a
+              href={PROFILE.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              className="p-2 text-green-600 hover:bg-green-50 rounded-full transition-colors"
+              title="WhatsApp"
+            >
+              <WhatsAppIcon className="w-4 h-4" />
+            </a>
+          </div>
+          <Button variant="outline" size="sm" asChild>
+            <a href="/assets/resume.pdf" download className="inline-flex items-center gap-2">
+              <Download className="w-4 h-4" />
+              Resume
+            </a>
+          </Button>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden p-2 rounded-lg hover:bg-secondary/80 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <AnimatePresence mode="wait">
+            {isMenuOpen ? (
+              <motion.div
+                key="close"
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <X className="w-6 h-6" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="menu"
+                initial={{ rotate: 90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Menu className="w-6 h-6" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-background/95 backdrop-blur-sm border-t overflow-hidden"
+          >
+            <div className="container mx-auto px-4 py-4 space-y-4">
+              {navItems.map((item, index) => (
+                <motion.a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  onClick={closeMenu}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="block text-sm hover:text-primary transition-colors py-2"
+                >
+                  {item}
+                </motion.a>
+              ))}
+              
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navItems.length * 0.1 }}
+                className="flex items-center gap-4 pt-4 border-t"
+              >
+                <a
+                  href={PROFILE.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                  title="LinkedIn"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a
+                  href={PROFILE.whatsapp}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2 text-green-600 hover:bg-green-50 rounded-full transition-colors"
+                  title="WhatsApp"
+                >
+                  <WhatsAppIcon className="w-5 h-5" />
+                </a>
+                <Button variant="outline" size="sm" asChild className="ml-auto">
+                  <a href="/assets/resume.pdf" download className="inline-flex items-center gap-2">
+                    <Download className="w-4 h-4" />
+                    Resume
+                  </a>
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
 
 const HeroSection = () => (
   <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20">
@@ -155,10 +323,10 @@ const HeroSection = () => (
               Credly
             </a>
           </Button>
-           <Button variant="outline" size="lg" asChild>
+          <Button variant="outline" size="lg" asChild>
             <a href={PROFILE.linkedin} target="_blank" rel="noreferrer">
-              <BadgeCheck className="w-5 h-5 mr-2" />
-              Linkedin
+              <Linkedin className="w-5 h-5 mr-2" />
+              LinkedIn
             </a>
           </Button>
         </motion.div>
@@ -189,7 +357,7 @@ const AboutSection = () => (
             transition={{ duration: 0.6 }}
             className="flex justify-center"
           >
-         <div className="w-64 h-64 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary overflow-hidden shadow-xl">
+            <div className="w-64 h-64 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary overflow-hidden shadow-xl">
               <img 
                 src="/images/profile.jpg" 
                 alt="Wahab Mustapha Aremu"
@@ -386,11 +554,23 @@ const ContactSection = () => (
           Want to collaborate or discuss an opportunity? Let&apos;s connect and build something amazing together.
         </p>
         
-        <div className="grid sm:grid-cols-2 gap-4 max-w-md mx-auto">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
           <Button size="lg" asChild>
             <a href={`mailto:${PROFILE.email}`}>
               <Mail className="w-5 h-5 mr-2" />
               Email Me
+            </a>
+          </Button>
+          <Button variant="outline" size="lg" asChild>
+            <a href={PROFILE.linkedin} target="_blank" rel="noreferrer">
+              <Linkedin className="w-5 h-5 mr-2" />
+              LinkedIn
+            </a>
+          </Button>
+          <Button variant="outline" size="lg" asChild>
+            <a href={PROFILE.whatsapp} target="_blank" rel="noreferrer">
+              <WhatsAppIcon className="w-5 h-5 mr-2" />
+              WhatsApp
             </a>
           </Button>
           <Button variant="outline" size="lg" asChild>
@@ -407,9 +587,54 @@ const ContactSection = () => (
 
 const Footer = () => (
   <footer className="py-8 border-t bg-secondary/5">
-    <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-      <p>© {new Date().getFullYear()} {PROFILE.name}. All rights reserved.</p>
-      <p className="mt-1">Built with Next.js, Tailwind CSS, and deployed on Netlify</p>
+    <div className="container mx-auto px-4">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="text-center md:text-left">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} {PROFILE.name}. All rights reserved.
+          </p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Built with Next.js, Tailwind CSS, and deployed on Netlify
+          </p>
+        </div>
+        
+        <div className="flex items-center gap-4">
+          <a
+            href={PROFILE.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="text-muted-foreground hover:text-blue-600 transition-colors"
+            title="LinkedIn"
+          >
+            <Linkedin className="w-5 h-5" />
+          </a>
+          <a
+            href={PROFILE.whatsapp}
+            target="_blank"
+            rel="noreferrer"
+            className="text-muted-foreground hover:text-green-600 transition-colors"
+            title="WhatsApp"
+          >
+            <WhatsAppIcon className="w-5 h-5" />
+          </a>
+          <a
+            href={PROFILE.github}
+            target="_blank"
+            rel="noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            title="GitHub"
+          >
+            <Github className="w-5 h-5" />
+          </a>
+          <a
+            href={`mailto:${PROFILE.email}`}
+            className="text-muted-foreground hover:text-primary transition-colors"
+            title="Email"
+          >
+            <Mail className="w-5 h-5" />
+          </a>
+        </div>
+      </div>
     </div>
   </footer>
 );
@@ -418,6 +643,7 @@ export default function Portfolio() {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <FloatingSocialIcons />
       <HeroSection />
       <AboutSection />
       <CertificationsSection />
