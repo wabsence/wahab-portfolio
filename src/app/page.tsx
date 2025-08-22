@@ -80,6 +80,20 @@ const PROJECTS = [
     image: "/images/projects/netflix-devsecops.png", 
     technologies: ["AWS", "ArgoCD", "Grafana", "Prometheus", "WAF"],
   },
+  {
+    title: "devops-project-01-static-website",
+    description: "A modern, responsive portfolio website built with AWS cloud services and deployed using Infrastructure as Code (Terraform) and CI/CD pipelines.",
+    github: "https://github.com/wabsence/Netflix-DevSecOps-Project.git",
+    image: "/images/projects/netflix-devsecops.png", 
+    technologies: ["AWS (S3, CloudFront, Route 53, ACM)", "IaC (Terraform)", "CI/CD(GitHub Actions)", "Version Control (Git & GitHub)"],
+  },
+  {
+    title: "microservices-python-app",
+    description: "A Python-based microservices application on Amazon EKS (Elastic Kubernetes Service).",
+    github: "https://github.com/wabsence/Netflix-DevSecOps-Project.git",
+    image: "/images/projects/netflix-devsecops.png", 
+    technologies: ["Programming & Frameworks(Python, JWT (JSON Web Tokens))", "Cloud Infrastructure (AWS, Amazon EKS, Kubernetes, kubectl )", "Database (MongoDB, PostgreSQL)", "Message Queuing (RabbitMQ)", "Package Management (Helm & Helm charts)", "Version Control (Git & GitHub)", "Notifications(Gmail integration, 2FA))"],
+  },
 ];
 
 const SKILLS = [
